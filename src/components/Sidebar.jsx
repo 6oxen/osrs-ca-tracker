@@ -48,8 +48,8 @@ export default function Sidebar({ currentView, setView }) {
           setView={setView}
         />
         <NavButton
-          label="Points Planner"
-          id="planner"
+          label="Team CAs"
+          id="teamcas"
           active={currentView}
           setView={setView}
         />
@@ -175,6 +175,29 @@ function NavButton({ label, id, active, setView, badge }) {
             stroke="currentColor"
             strokeWidth="1.4"
             strokeLinecap="round"
+          />
+        </svg>
+      );
+    if (name === "teamcas")
+      return (
+        <svg
+          className="w-5 h-5 text-osrs-gold"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.2" />
+          <circle
+            cx="16"
+            cy="8"
+            r="3"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+          <path
+            d="M5 14c0-1.5 1.5-3 3-3h8c1.5 0 3 1.5 3 3v3H5v-3z"
+            stroke="currentColor"
+            strokeWidth="1.2"
           />
         </svg>
       );

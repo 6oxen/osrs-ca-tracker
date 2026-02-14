@@ -6,6 +6,7 @@ import Dashboard from "./components/Dashboard";
 import Browser from "./components/Browser";
 import Planner from "./components/Planner";
 import TodoList from "./components/TodoList";
+import TeamCAs from "./components/TeamCAs";
 
 function MainLayout() {
   // Navigation State
@@ -43,6 +44,7 @@ function MainLayout() {
             <Browser initialTier={browserFilterTier} />
           )}
           {currentView === "planner" && <Planner />}
+          {currentView === "teamcas" && <TeamCAs />}
           {currentView === "todo" && <TodoList />}
         </div>
       </main>

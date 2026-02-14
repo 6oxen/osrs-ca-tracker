@@ -17,6 +17,7 @@ export default function TodoList() {
   const [expandedGroup, setExpandedGroup] = useState(null);
   const [removingCompleted, setRemovingCompleted] = useState(false);
   const [removalMessage, setRemovalMessage] = useState(null);
+  const [sortBy, setSortBy] = useState("tier"); // "tier", "monster", "name"
 
   const groupedTasks = useMemo(() => {
     const groups = {};
@@ -102,36 +103,83 @@ export default function TodoList() {
 
     return (
       <div
-        className={`card group relative ${
+        className={`card group relative p-3 ${
           done
             ? "border-green-500/50 opacity-75 hover:opacity-85"
             : "hover:border-osrs-gold/50"
         }`}
       >
         <button
-          className="absolute top-3 right-3 text-gray-400 hover:text-red-400 transition-colors text-lg"
+          className="absolute top-2 right-2 text-gray-400 hover:text-red-400 transition-colors text-sm"
           onClick={() => togglePin(id)}
           title="Remove from pinned"
         >
           ✕
         </button>
-        <div className="pr-8">
-          <h4 className="font-semibold text-gray-100 mb-2">{task.Name}</h4>
-          <div className="flex gap-2 mb-3 flex-wrap">
+        <div className="pr-6">
+          <h4 className="font-semibold text-sm text-gray-100 mb-2 line-clamp-2">
+            {task.Name}
+          </h4>
+          <div className="flex gap-1 mb-2 flex-wrap items-center">
             <TierBadge tier={task.Tier} />
-            <span className={`monster-badge tier-${tierClass}`}>
+            <span className={`monster-badge tier-${tierClass} text-xs`}>
               {task.Monster}
             </span>
           </div>
-          <p className="text-sm text-gray-400 mb-3 leading-relaxed">
-            {task.Description}
-          </p>
-          {done && (
-            <p className="text-sm font-semibold text-green-400">✓ Completed!</p>
-          )}
+          <div className="flex gap-2 items-center flex-wrap">
+            {task.URL && (
+              <a
+                href={task.URL}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs px-2 py-1 bg-osrs-gold/10 border border-osrs-gold/30 text-osrs-gold/50 hover:bg-osrs-gold/20 hover:text-osrs-gold/70 rounded transition-colors"
+              >
+                Wiki
+              </a>
+            )}
+            {done && (
+              <p className="text-xs font-semibold text-green-400">✓ Done</p>
+            )}
+          </div>
         </div>
       </div>
     );
+  };
+
+  const getSortedPinnedIds = () => {
+    const sortedIds = [...pinnedIds];
+
+    if (sortBy === "tier") {
+      sortedIds.sort((a, b) => {
+        const TIERS = [
+          "Easy",
+          "Medium",
+          "Hard",
+          "Elite",
+          "Master",
+          "Grandmaster",
+        ];
+        const taskA = masterData[a] || masterData[String(a)] || {};
+        const taskB = masterData[b] || masterData[String(b)] || {};
+        const tierDiff = TIERS.indexOf(taskA.Tier) - TIERS.indexOf(taskB.Tier);
+        if (tierDiff !== 0) return tierDiff;
+        return (taskA.Monster || "").localeCompare(taskB.Monster || "");
+      });
+    } else if (sortBy === "monster") {
+      sortedIds.sort((a, b) => {
+        const taskA = masterData[a] || masterData[String(a)] || {};
+        const taskB = masterData[b] || masterData[String(b)] || {};
+        return (taskA.Monster || "").localeCompare(taskB.Monster || "");
+      });
+    } else if (sortBy === "name") {
+      sortedIds.sort((a, b) => {
+        const taskA = masterData[a] || masterData[String(a)] || {};
+        const taskB = masterData[b] || masterData[String(b)] || {};
+        return (taskA.Name || "").localeCompare(taskB.Name || "");
+      });
+    }
+
+    return sortedIds;
   };
 
   return (
@@ -294,13 +342,30 @@ export default function TodoList() {
           </p>
         </div>
       ) : viewMode === "list" ? (
-        <div className="todo-grid">
-          {pinnedIds.map((id) => {
-            const task = masterData[id] || masterData[String(id)] || {};
-            const done = isCompleted(id);
-            return <TaskCard key={id} id={id} task={task} done={done} />;
-          })}
-        </div>
+        <>
+          <div className="mb-4 flex items-center gap-2">
+            <label htmlFor="sort-select" className="text-sm text-gray-400">
+              Sort by:
+            </label>
+            <select
+              id="sort-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-2 text-sm bg-osrs-card rounded-md text-gray-300 cursor-pointer border border-osrs-border/50 hover:border-osrs-gold/50 transition-colors"
+            >
+              <option value="tier">Tier</option>
+              <option value="monster">Monster</option>
+              <option value="name">Achievement Name</option>
+            </select>
+          </div>
+          <div className="todo-grid">
+            {getSortedPinnedIds().map((id) => {
+              const task = masterData[id] || masterData[String(id)] || {};
+              const done = isCompleted(id);
+              return <TaskCard key={id} id={id} task={task} done={done} />;
+            })}
+          </div>
+        </>
       ) : (
         <div className="animate-slide-in">
           {expandedGroup ? (
