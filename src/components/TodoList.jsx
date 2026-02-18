@@ -127,7 +127,7 @@ export default function TodoList() {
             </span>
           </div>
           <div className="flex gap-1 mb-2 flex-wrap items-center">
-            <p>{task.Description}</p>
+            <p className="text-gray-400 max-w-xs text-sm">{task.Description}</p>
           </div>
           <div className="flex gap-2 items-center flex-wrap">
             {task.URL && (
