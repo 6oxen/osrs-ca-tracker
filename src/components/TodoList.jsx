@@ -126,6 +126,9 @@ export default function TodoList() {
               {task.Monster}
             </span>
           </div>
+          <div className="flex gap-1 mb-2 flex-wrap items-center">
+            <p>{task.Monster} testrad</p>
+          </div>
           <div className="flex gap-2 items-center flex-wrap">
             {task.URL && (
               <a
