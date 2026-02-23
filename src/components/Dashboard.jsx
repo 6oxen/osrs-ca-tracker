@@ -17,6 +17,18 @@ export default function Dashboard({ setView, setFilterTier }) {
   } = useApp();
 
   const [additional, setAdditional] = useState("");
+  const [selectionMode, setSelectionMode] = useState("name");
+
+  //psudo
+  const handleSelectionChange = (value) => {
+    setSelectionMode(value);
+
+    if (value === "random") {
+      alert(
+        "Rosor är röda,\nVioler är blå,\nSimon har en syrra som jag vill sätta på."
+      );
+    }
+  };
 
   // Calculate stats
   const stats = {};
@@ -60,7 +72,8 @@ export default function Dashboard({ setView, setFilterTier }) {
   };
 
   // Planner logic
-  const { plan, excludedIds, pointsMode, priorityType, priorityValue } = plannerState;
+  const { plan, excludedIds, pointsMode, priorityType, priorityValue } =
+    plannerState;
   const userIsConnected = !!currentUser;
 
   // Get unique achievement types from masterData
@@ -88,7 +101,12 @@ export default function Dashboard({ setView, setFilterTier }) {
       .filter((t) => !isCompleted(t.id) && !excludedIds.has(t.id));
 
     // Apply prioritization with multi-select support
-    if (priorityType && priorityType.length > 0 && priorityValue && priorityValue.length > 0) {
+    if (
+      priorityType &&
+      priorityType.length > 0 &&
+      priorityValue &&
+      priorityValue.length > 0
+    ) {
       // Both type and tier prioritization active
       const priorityTasks = incomplete.filter(
         (t) => priorityType.includes(t.Type) && priorityValue.includes(t.Tier)
@@ -121,8 +139,12 @@ export default function Dashboard({ setView, setFilterTier }) {
       ];
     } else if (priorityType && priorityType.length > 0) {
       // Only type prioritization
-      const priorityTasks = incomplete.filter((t) => priorityType.includes(t.Type));
-      const otherTasks = incomplete.filter((t) => !priorityType.includes(t.Type));
+      const priorityTasks = incomplete.filter((t) =>
+        priorityType.includes(t.Type)
+      );
+      const otherTasks = incomplete.filter(
+        (t) => !priorityType.includes(t.Type)
+      );
 
       const sortByTier = (tasks) =>
         tasks.sort((a, b) => {
@@ -134,8 +156,12 @@ export default function Dashboard({ setView, setFilterTier }) {
       incomplete = [...sortByTier(priorityTasks), ...sortByTier(otherTasks)];
     } else if (priorityValue && priorityValue.length > 0) {
       // Only tier prioritization
-      const priorityTasks = incomplete.filter((t) => priorityValue.includes(t.Tier));
-      const otherTasks = incomplete.filter((t) => !priorityValue.includes(t.Tier));
+      const priorityTasks = incomplete.filter((t) =>
+        priorityValue.includes(t.Tier)
+      );
+      const otherTasks = incomplete.filter(
+        (t) => !priorityValue.includes(t.Tier)
+      );
 
       const sortByMonster = (tasks) =>
         tasks.sort((a, b) => a.Monster.localeCompare(b.Monster));
@@ -147,7 +173,10 @@ export default function Dashboard({ setView, setFilterTier }) {
           return a.Monster.localeCompare(b.Monster);
         });
 
-      incomplete = [...sortByMonster(priorityTasks), ...sortByTierDesc(otherTasks)];
+      incomplete = [
+        ...sortByMonster(priorityTasks),
+        ...sortByTierDesc(otherTasks),
+      ];
     } else {
       // Default sort by tier, then monster
       incomplete.sort((a, b) => {
@@ -205,7 +234,12 @@ export default function Dashboard({ setView, setFilterTier }) {
       .filter((t) => !isCompleted(t.id) && !excludedSet.has(t.id));
 
     // Apply prioritization with multi-select support
-    if (priorityType && priorityType.length > 0 && priorityValue && priorityValue.length > 0) {
+    if (
+      priorityType &&
+      priorityType.length > 0 &&
+      priorityValue &&
+      priorityValue.length > 0
+    ) {
       // Both type and tier prioritization active
       const priorityTasks = incomplete.filter(
         (t) => priorityType.includes(t.Type) && priorityValue.includes(t.Tier)
@@ -238,8 +272,12 @@ export default function Dashboard({ setView, setFilterTier }) {
       ];
     } else if (priorityType && priorityType.length > 0) {
       // Only type prioritization
-      const priorityTasks = incomplete.filter((t) => priorityType.includes(t.Type));
-      const otherTasks = incomplete.filter((t) => !priorityType.includes(t.Type));
+      const priorityTasks = incomplete.filter((t) =>
+        priorityType.includes(t.Type)
+      );
+      const otherTasks = incomplete.filter(
+        (t) => !priorityType.includes(t.Type)
+      );
 
       const sortByTier = (tasks) =>
         tasks.sort((a, b) => {
@@ -251,8 +289,12 @@ export default function Dashboard({ setView, setFilterTier }) {
       incomplete = [...sortByTier(priorityTasks), ...sortByTier(otherTasks)];
     } else if (priorityValue && priorityValue.length > 0) {
       // Only tier prioritization
-      const priorityTasks = incomplete.filter((t) => priorityValue.includes(t.Tier));
-      const otherTasks = incomplete.filter((t) => !priorityValue.includes(t.Tier));
+      const priorityTasks = incomplete.filter((t) =>
+        priorityValue.includes(t.Tier)
+      );
+      const otherTasks = incomplete.filter(
+        (t) => !priorityValue.includes(t.Tier)
+      );
 
       const sortByMonster = (tasks) =>
         tasks.sort((a, b) => a.Monster.localeCompare(b.Monster));
@@ -264,7 +306,10 @@ export default function Dashboard({ setView, setFilterTier }) {
           return a.Monster.localeCompare(b.Monster);
         });
 
-      incomplete = [...sortByMonster(priorityTasks), ...sortByTierDesc(otherTasks)];
+      incomplete = [
+        ...sortByMonster(priorityTasks),
+        ...sortByTierDesc(otherTasks),
+      ];
     } else {
       // Default sort by tier, then monster
       incomplete.sort((a, b) => {
@@ -369,7 +414,8 @@ export default function Dashboard({ setView, setFilterTier }) {
                 Set Your Goal
               </h3>
               <p className="text-sm text-gray-400">
-                Enter points needed and choose between total or additional points.
+                Enter points needed and choose between total or additional
+                points.
               </p>
             </div>
 
@@ -415,7 +461,9 @@ export default function Dashboard({ setView, setFilterTier }) {
                       name="pointsMode"
                       value="total"
                       checked={pointsMode === "total"}
-                      onChange={() => updatePlannerState({ pointsMode: "total" })}
+                      onChange={() =>
+                        updatePlannerState({ pointsMode: "total" })
+                      }
                       className="w-4 h-4 cursor-pointer accent-osrs-gold"
                     />
                     <span className="text-sm text-gray-300 group-hover:text-osrs-gold transition-colors">
@@ -427,26 +475,39 @@ export default function Dashboard({ setView, setFilterTier }) {
 
               {/* Prioritization Options */}
               <div className="border-t border-ui-border pt-4">
-                <p className="text-sm font-semibold text-gray-400 mb-3">Prioritize By:</p>
+                <p className="text-sm font-semibold text-gray-400 mb-3">
+                  Prioritize By:
+                </p>
                 <div className="space-y-3">
                   {/* Achievement Types */}
                   <div>
-                    <p className="text-xs text-gray-500 mb-2">Achievement Types:</p>
+                    <p className="text-xs text-gray-500 mb-2">
+                      Achievement Types:
+                    </p>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                       {achievementTypes.map((type) => (
-                        <label key={type} className="flex items-center gap-2 cursor-pointer group">
+                        <label
+                          key={type}
+                          className="flex items-center gap-2 cursor-pointer group"
+                        >
                           <input
                             type="checkbox"
-                            checked={priorityType && priorityType.includes(type)}
+                            checked={
+                              priorityType && priorityType.includes(type)
+                            }
                             onChange={(e) => {
-                              const newTypes = priorityType ? [...priorityType] : [];
+                              const newTypes = priorityType
+                                ? [...priorityType]
+                                : [];
                               if (e.target.checked) {
-                                if (!newTypes.includes(type)) newTypes.push(type);
+                                if (!newTypes.includes(type))
+                                  newTypes.push(type);
                               } else {
                                 newTypes.splice(newTypes.indexOf(type), 1);
                               }
                               updatePlannerState({
-                                priorityType: newTypes.length > 0 ? newTypes : null,
+                                priorityType:
+                                  newTypes.length > 0 ? newTypes : null,
                               });
                               setTimeout(() => generatePlan(), 0);
                             }}
@@ -459,25 +520,33 @@ export default function Dashboard({ setView, setFilterTier }) {
                       ))}
                     </div>
                   </div>
-
                   {/* Tiers */}
                   <div>
                     <p className="text-xs text-gray-500 mb-2">Tiers:</p>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                       {availableTiers.map((tier) => (
-                        <label key={tier} className="flex items-center gap-2 cursor-pointer group">
+                        <label
+                          key={tier}
+                          className="flex items-center gap-2 cursor-pointer group"
+                        >
                           <input
                             type="checkbox"
-                            checked={priorityValue && priorityValue.includes(tier)}
+                            checked={
+                              priorityValue && priorityValue.includes(tier)
+                            }
                             onChange={(e) => {
-                              const newTiers = priorityValue ? [...priorityValue] : [];
+                              const newTiers = priorityValue
+                                ? [...priorityValue]
+                                : [];
                               if (e.target.checked) {
-                                if (!newTiers.includes(tier)) newTiers.push(tier);
+                                if (!newTiers.includes(tier))
+                                  newTiers.push(tier);
                               } else {
                                 newTiers.splice(newTiers.indexOf(tier), 1);
                               }
                               updatePlannerState({
-                                priorityValue: newTiers.length > 0 ? newTiers : null,
+                                priorityValue:
+                                  newTiers.length > 0 ? newTiers : null,
                               });
                               setTimeout(() => generatePlan(), 0);
                             }}
@@ -488,6 +557,42 @@ export default function Dashboard({ setView, setFilterTier }) {
                           </span>
                         </label>
                       ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-400 mb-3">
+                      Exclude Options:
+                    </p>
+                    <div className="space-y-3">
+                      <div className="flex gap-4 items-center">
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="radio"
+                            name="selectionMode"
+                            value="name"
+                            checked={selectionMode === "name"}
+                            onChange={() => handleSelectionChange("name")}
+                            className="w-4 h-4 cursor-pointer accent-osrs-gold"
+                          />
+                          <span className="text-sm text-gray-300 group-hover:text-osrs-gold transition-colors">
+                            By Name
+                          </span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="radio"
+                            name="selectionMode"
+                            value="random"
+                            checked={selectionMode === "random"}
+                            onChange={() => handleSelectionChange("random")}
+                            className="w-4 h-4 cursor-pointer accent-osrs-gold"
+                          />
+                          <span className="text-sm text-gray-300 group-hover:text-osrs-gold transition-colors">
+                            Random Selection
+                          </span>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -564,9 +669,21 @@ export default function Dashboard({ setView, setFilterTier }) {
                       return (
                         <tr
                           key={task.id}
-                          style={isPinned ? { backgroundColor: "rgba(74, 145, 92, 0.2)" } : {}}
-                          onMouseEnter={(e) => isPinned && (e.currentTarget.style.backgroundColor = "rgba(74, 145, 92, 0.3)")}
-                          onMouseLeave={(e) => isPinned && (e.currentTarget.style.backgroundColor = "rgba(74, 145, 92, 0.2)")}
+                          style={
+                            isPinned
+                              ? { backgroundColor: "rgba(74, 145, 92, 0.2)" }
+                              : {}
+                          }
+                          onMouseEnter={(e) =>
+                            isPinned &&
+                            (e.currentTarget.style.backgroundColor =
+                              "rgba(74, 145, 92, 0.3)")
+                          }
+                          onMouseLeave={(e) =>
+                            isPinned &&
+                            (e.currentTarget.style.backgroundColor =
+                              "rgba(74, 145, 92, 0.2)")
+                          }
                         >
                           <td>
                             <TierBadge tier={task.Tier} />
@@ -589,9 +706,7 @@ export default function Dashboard({ setView, setFilterTier }) {
                               {task.Name}
                             </a>
                           </td>
-                          <td className="text-xs text-gray-400">
-                            {task.Type}
-                          </td>
+                          <td className="text-xs text-gray-400">{task.Type}</td>
                           <td>
                             <div className="flex gap-2">
                               <button
