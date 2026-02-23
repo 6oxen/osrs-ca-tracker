@@ -17,18 +17,6 @@ export default function Dashboard({ setView, setFilterTier }) {
   } = useApp();
 
   const [additional, setAdditional] = useState("");
-  const [selectionMode, setSelectionMode] = useState("name");
-
-  //psudo
-  const handleSelectionChange = (value) => {
-    setSelectionMode(value);
-
-    if (value === "random") {
-      alert(
-        "Rosor är röda,\nVioler är blå,\nSimon har en syrra som jag vill sätta på."
-      );
-    }
-  };
 
   // Calculate stats
   const stats = {};
@@ -557,42 +545,6 @@ export default function Dashboard({ setView, setFilterTier }) {
                           </span>
                         </label>
                       ))}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-400 mb-3">
-                      Exclude Options:
-                    </p>
-                    <div className="space-y-3">
-                      <div className="flex gap-4 items-center">
-                        <label className="flex items-center gap-2 cursor-pointer group">
-                          <input
-                            type="radio"
-                            name="selectionMode"
-                            value="name"
-                            checked={selectionMode === "name"}
-                            onChange={() => handleSelectionChange("name")}
-                            className="w-4 h-4 cursor-pointer accent-osrs-gold"
-                          />
-                          <span className="text-sm text-gray-300 group-hover:text-osrs-gold transition-colors">
-                            By Name
-                          </span>
-                        </label>
-
-                        <label className="flex items-center gap-2 cursor-pointer group">
-                          <input
-                            type="radio"
-                            name="selectionMode"
-                            value="random"
-                            checked={selectionMode === "random"}
-                            onChange={() => handleSelectionChange("random")}
-                            className="w-4 h-4 cursor-pointer accent-osrs-gold"
-                          />
-                          <span className="text-sm text-gray-300 group-hover:text-osrs-gold transition-colors">
-                            Random Selection
-                          </span>
-                        </label>
-                      </div>
                     </div>
                   </div>
                 </div>
